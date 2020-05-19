@@ -33,7 +33,7 @@
  *  Software Distribution Coordinator  or  sdc@inet.no
  *  Inferno Nettverk A/S
  *  Oslo Research Park
- *  Gaustadall�en 21
+ *  Gaustadallen 21
  *  NO-0349 Oslo
  *  Norway
  *
@@ -1004,7 +1004,7 @@ dnsresolvdst {
    yylval.string = yytext;
    return DNSRESOLVDST;
 }
- 
+
 redirect {
    yylval.string = yytext;
    return REDIRECT;

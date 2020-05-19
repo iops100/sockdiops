@@ -1046,7 +1046,7 @@ external_protocol: EXTERNAL_PROTOCOL ':' {
 #if !SOCKS_CLIENT
       if (sockscf.external.addrc > 0) {
          log_interfaceprotocol_set_too_late(EXTERNALIF);
-         sockdexit(EXIT_FAILURE);
+         sockdiopsexit(EXIT_FAILURE);
       }
 
       ifproto = &sockscf.external.protocol;
@@ -1136,7 +1136,7 @@ logoutputdevice: LOGFILE {
             }
          }
          else {
-            sockd_freelogobject(add_to_errlog ?  &old_errlog : &old_log, 1);
+            sockdiops_freelogobject(add_to_errlog ?  &old_errlog : &old_log, 1);
             slog(LOG_DEBUG, "%s: added logfile \"%s\" to %s",
                  function, $1, add_to_errlog ? "errlog" : "logoutput");
          }
@@ -3107,14 +3107,14 @@ parseconfig(filename)
 
    if (sockscf.state.inited)
       /* in case we need something special to (re)open config-file. */
-      sockd_priv(SOCKD_PRIV_PRIVILEGED, PRIV_ON);
+      sockdiops_priv(SOCKD_PRIV_PRIVILEGED, PRIV_ON);
 #endif /* !SOCKS_CLIENT */
 
    yyin = fopen(filename, "r");
 
 #if !SOCKS_CLIENT
    if (sockscf.state.inited)
-      sockd_priv(SOCKD_PRIV_PRIVILEGED, PRIV_OFF);
+      sockdiops_priv(SOCKD_PRIV_PRIVILEGED, PRIV_OFF);
 #endif /* SERVER */
 
    if (yyin == NULL
@@ -3147,7 +3147,7 @@ parseconfig(filename)
 #else /* !SOCKS_CLIENT */
 
       if (!sockscf.state.inited)
-         sockdexit(EXIT_FAILURE);
+         sockdiopsexit(EXIT_FAILURE);
 
       /*
        * Might possibly continue with old config.
@@ -3933,7 +3933,7 @@ configure_privileges(void)
 #endif /* !HAVE_PRIVILEGES */
 
    if (isfirsttime) {
-      if (sockd_initprivs() != 0) {
+      if (sockdiops_initprivs() != 0) {
          slog(HAVE_PRIVILEGES ? LOG_INFO : LOG_WARNING,
               "%s: could not initialize privileges (%s)%s",
               function,

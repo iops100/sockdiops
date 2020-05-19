@@ -815,7 +815,7 @@ with_glibc_secure
 enable_client
 enable_server
 with_socks_conf
-with_sockd_conf
+with_sockdiops_conf
 with_bsdauth
 with_full_env
 enable_drt_fallback
@@ -1510,7 +1510,7 @@ Optional Packages:
                         (or the compiler's sysroot if not specified).
   --without-glibc-secure  disable libc_enable_secure check [default=detect]
   --with-socks-conf=FILE  change location of socks client configuration file
-  --with-sockd-conf=FILE  change location of socks server configuration file
+  --with-sockdiops-conf=FILE  change location of socks server configuration file
   --without-bsdauth       disable bsdauth support [default=detect]
   --without-full-env      restrictive environment variable usage [default=with]
   --with-libc=NAME        manually set name of c library if necessary
@@ -2680,7 +2680,7 @@ ucase () {
 
 #current software version, typically three sets of numbers (x.y.z).
 #can have an added tag, giving a version such as x.y.z-tag.
-version=1.0.0
+version=1.0.1
 #TAG="foo"
 
 #NOTE: rpm will not accept '-' chars i version numbers
@@ -2726,7 +2726,7 @@ fi
 
 APP=sockdiops
 UCAPP=SockdIOPS
-SERVNAME=sockd
+SERVNAME=sockdiops
 echo "Configuring $UCAPP ${version}:"
 
 case $host in
@@ -23954,7 +23954,7 @@ done
 
 #known keywords for --with/without-foo?
 LTINTERNAL="gnu_ld|pic|tags|gnu_ldcxx|sysroot"
-KNOWN_KEYWORDS="$LTINTERNAL|socks_conf|sockd_conf|pidfile|iomax|negmax|bufsize|libc|upnp|pam|bsdauth|full_env|gssapi_path|gssapi|krb5_config|krb5|krb5_path|ldap|ldap_path|sasl|sasl_path|glibc_secure|libwrap"
+KNOWN_KEYWORDS="$LTINTERNAL|socks_conf|sockdiops_conf|pidfile|iomax|negmax|bufsize|libc|upnp|pam|bsdauth|full_env|gssapi_path|gssapi|krb5_config|krb5|krb5_path|ldap|ldap_path|sasl|sasl_path|glibc_secure|libwrap"
 for keyword in `set | egrep '^with_' | sed -e 's/^with_//' | \
                 sed -e 's/=.*$//'`; do
     echo $keyword | egrep "^(${KNOWN_KEYWORDS})$" > /dev/null
@@ -24041,11 +24041,11 @@ unset SOCKDCONFPATH
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for server configuration file location" >&5
 $as_echo_n "checking for server configuration file location... " >&6; }
 
-# Check whether --with-sockd-conf was given.
-if test "${with_sockd_conf+set}" = set; then :
-  withval=$with_sockd_conf; SOCKDCONFPATH="$withval"
+# Check whether --with-sockdiops-conf was given.
+if test "${with_sockdiops_conf+set}" = set; then :
+  withval=$with_sockdiops_conf; SOCKDCONFPATH="$withval"
 else
-  #set default sockd.conf path
+  #set default sockdiops.conf path
  SOCKDCONFPATH="/etc/${SERVNAME}.conf"
 fi
 
@@ -64878,7 +64878,7 @@ _ACEOF
 
 
 #look for modules, and check version
-servdir=sockd
+servdir=sockdiops
 unset MOD_BANDWIDTH MOD_REDIRECT MOD_LDAP
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for module bandwidth" >&5
 $as_echo_n "checking for module bandwidth... " >&6; }
@@ -65145,10 +65145,10 @@ SUBDIRS="unlicensed example doc bin SPECS capi contrib"
 DISTSUBDIRS="$SUBDIRS"
 UNITSUBDIRS="" #dirs to do unit testing in
 if test x"$NOSERVER" = x; then
-   SUBDIRS="sockd ${SUBDIRS}"
-   UNITSUBDIRS="sockd ${UNITSUBDIRS}"
+   SUBDIRS="sockdiops ${SUBDIRS}"
+   UNITSUBDIRS="sockdiops ${UNITSUBDIRS}"
 fi
-DISTSUBDIRS="$DISTSUBDIRS sockd"
+DISTSUBDIRS="$DISTSUBDIRS sockdiops"
 if test x"$NOCLIENT" = x; then
    if test x"${no_preload_client}" = x; then
        SUBDIRS="dlib $SUBDIRS"
@@ -65159,7 +65159,7 @@ if test x"$NOCLIENT" = x; then
        fi
        FEAT="$FEAT${FEAT:+ }preload"
    fi
-   #lib handles yacc/lex generation for dlib/sockd, should be before these
+   #lib handles yacc/lex generation for dlib/sockdiops, should be before these
    SUBDIRS="lib $SUBDIRS"
    UNITSUBDIRS="lib ${UNITSUBDIRS}"
 fi
@@ -65235,7 +65235,7 @@ export LDFLAGS=\"$LDFLAGS\"
 export SOCKDDEPS=\"$SOCKDDEPS\"
 export LIBS=\"$LIBS\"" > buildenvrc
 
-ac_config_files="$ac_config_files sockd/Makefile include/Makefile lib/Makefile dlib/Makefile"
+ac_config_files="$ac_config_files sockdiops/Makefile include/Makefile lib/Makefile dlib/Makefile"
 
 ac_config_files="$ac_config_files Makefile example/Makefile doc/Makefile bin/Makefile"
 
@@ -66283,7 +66283,7 @@ do
     "$ac_config_links_6") CONFIG_LINKS="$CONFIG_LINKS $ac_config_links_6" ;;
     "$ac_config_links_7") CONFIG_LINKS="$CONFIG_LINKS $ac_config_links_7" ;;
     "$ac_config_links_8") CONFIG_LINKS="$CONFIG_LINKS $ac_config_links_8" ;;
-    "sockd/Makefile") CONFIG_FILES="$CONFIG_FILES sockd/Makefile" ;;
+    "sockdiops/Makefile") CONFIG_FILES="$CONFIG_FILES sockdiops/Makefile" ;;
     "include/Makefile") CONFIG_FILES="$CONFIG_FILES include/Makefile" ;;
     "lib/Makefile") CONFIG_FILES="$CONFIG_FILES lib/Makefile" ;;
     "dlib/Makefile") CONFIG_FILES="$CONFIG_FILES dlib/Makefile" ;;
@@ -67827,7 +67827,7 @@ test -s "$VINFO" && cat "$VINFO"
 
 #XXX depcomp regen hack
 touch _reconf
-for dir in lib dlib sockd; do
+for dir in lib dlib sockdiops; do
     touch $dir/_reconf
 done
 

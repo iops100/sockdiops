@@ -33,7 +33,7 @@
  *  Software Distribution Coordinator  or  sdc@inet.no
  *  Inferno Nettverk A/S
  *  Oslo Research Park
- *  Gaustadall�en 21
+ *  Gaustadallen 21
  *  NO-0349 Oslo
  *  Norway
  *
@@ -210,12 +210,13 @@ int_sockshost2sockaddr2(host, addr, addrlen, gaierr, emsg, emsglen)
          /*
           * ZORILLE : to work
           */
-         *gaierr = cgetaddrinfo(host->addr.domain, NULL, &hints, &res, &resmem);
-         /* If Destination not resolved and Destination Don't be necessary revolved */
-         if ( *gaierr != 0 && !sockscf.dnsresolvdst ) {
-        	 slog(LOG_WARNING, "Resolve Protocol is FAKE for %s",host->addr.domain);
+          *gaierr = cgetaddrinfo(host->addr.domain, NULL, &hints, &res, &resmem);
+          /* If Destination not resolved and Destination Don't be necessary revolved */
+          if ( *gaierr != 0 && !sockscf.dnsresolvdst ) {
+           	 slog(LOG_WARNING, "Resolve Protocol is FAKE for %s",host->addr.domain);
              *gaierr=cgetaddrinfo("localhost", NULL, &hints, &res, &resmem);;
-         }
+           }
+         /**gaierr = cgetaddrinfo(host->addr.domain, NULL, &hints, &res, &resmem);*/
 
          if (*gaierr == 0) {
             if (res->ai_addrlen <= addrlen) {

@@ -215,7 +215,7 @@ postconfigloadinit(void)
 #endif /* HAVE_SCHED_SETAFFINITY */
 
    if (!sockscf.option.verifyonly)
-      sockd_setcpusettings(&sockscf.state.cpu, &newcpu);
+      sockdiops_setcpusettings(&sockscf.state.cpu, &newcpu);
 
 #if HAVE_SCHED_SETSCHEDULER
    /*
@@ -1532,7 +1532,7 @@ optioninit(void)
 {
    /*
     * initialize misc. options to sensible default.  Some may be
-    * overridden later by user in the sockd.conf.
+    * overridden later by user in the sockdiops.conf.
     */
 
    sockscf.resolveprotocol          = RESOLVEPROTOCOL_UDP;
